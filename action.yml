@@ -1,0 +1,57 @@
+name: 'Rust Docs to Wiki'
+description: 'Automatically extract Rust documentation and publish it to GitHub Wiki'
+author: 'Your Name'
+branding:
+  icon: 'book'
+  color: 'orange'
+
+inputs:
+  token:
+    description: 'GitHub token for wiki access (typically secrets.GITHUB_TOKEN)'
+    required: true
+    default: ${{ github.token }}
+  source_path:
+    description: 'Directory containing Rust source files'
+    required: false
+    default: 'src'
+  wiki_path:
+    description: 'Directory to store generated wiki content before publishing'
+    required: false
+    default: 'wiki-content'
+  commit_message:
+    description: 'Commit message for wiki updates'
+    required: false
+    default: 'Update documentation from Rust code'
+  excluded_paths:
+    description: 'Comma-separated list of paths to exclude'
+    required: false
+    default: ''
+  extract_private:
+    description: 'Whether to extract private items (true/false)'
+    required: false
+    default: 'false'
+  max_definition_lines:
+    description: 'Maximum number of lines to extract for each definition'
+    required: false
+    default: '50'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Create wiki directory
+      shell: bash
+      run: mkdir -p ${{ inputs.wiki_path }}
+
+    - name: Process Rust files
+      shell: bash
+      run: ${{ github.action_path }}/entrypoint.sh
+      env:
+        SOURCE_PATH: ${{ inputs.source_path }}
+        WIKI_PATH: ${{ inputs.wiki_path }}
+        COMMIT_MESSAGE: ${{ inputs.commit_message }}
+        EXCLUDED_PATHS: ${{ inputs.excluded_paths }}
+        EXTRACT_PRIVATE: ${{ inputs.extract_private }}
+        MAX_DEFINITION_LINES: ${{ inputs.max_definition_lines }}
+        GITHUB_TOKEN: ${{ inputs.token }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_SHA: ${{ github.sha }}
