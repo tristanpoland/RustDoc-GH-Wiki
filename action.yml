@@ -41,10 +41,18 @@ runs:
     - name: Create wiki directory
       shell: bash
       run: mkdir -p ${{ inputs.wiki_path }}
-
+    - name: Debug action directory
+      shell: bash
+      run: |
+        echo "GITHUB_ACTION_PATH: $GITHUB_ACTION_PATH"
+        ls -la $GITHUB_ACTION_PATH
+        find $GITHUB_ACTION_PATH -type f -name "*.sh"
+    - name: Fix executable permissions
+      shell: bash
+      run: chmod +x $GITHUB_ACTION_PATH/entrypoint.sh
     - name: Process Rust files
       shell: bash
-      run: ${{ github.action_path }}/entrypoint.sh
+      run: $GITHUB_ACTION_PATH/entrypoint.sh
       env:
         SOURCE_PATH: ${{ inputs.source_path }}
         WIKI_PATH: ${{ inputs.wiki_path }}
