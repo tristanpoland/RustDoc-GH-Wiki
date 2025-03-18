@@ -80,4 +80,4 @@ The action generates:
 
 ## License
 
-MIT
+Apache-2.0 license
