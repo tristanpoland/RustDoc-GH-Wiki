@@ -41,7 +41,9 @@ runs:
     - name: Create wiki directory
       shell: bash
       run: mkdir -p ${{ inputs.wiki_path }}
-
+    - name: Ensure executable permissions
+      shell: bash
+      run: chmod +x ${{ github.action_path }}/entrypoint.sh
     - name: Process Rust files
       shell: bash
       run: ${{ github.action_path }}/entrypoint.sh
