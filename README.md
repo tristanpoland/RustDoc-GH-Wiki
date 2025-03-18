@@ -36,9 +36,9 @@ jobs:
           fetch-depth: 0
 
       - name: Generate Rust Wiki Docs
-        uses: tristanpoland/rust-docs-to-wiki-action@v1
+        uses: tristanpoland/RustDoc-GH-Wiki@0.0.6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.WIKI_TOKEN }}
           # Optional customizations:
           # source_path: 'src'
           # wiki_path: 'wiki-content'
